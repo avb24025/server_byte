@@ -13,30 +13,21 @@ const app = express();
 // Set up the HTTP server
 const server = http.createServer(app);
 
-// Allowed origins for CORS
-const allowedOrigins = ["https://byteb.netlify.app/"];
-
-// Enable CORS middleware
+// Enable CORS middleware to allow all origins
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    methods: ["GET", "POST"],
-    credentials: true, // Allow credentials like cookies
+    origin: "*", // Allow all origins
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow all HTTP methods
+    credentials: false, // Set to false if cookies are not required
   })
 );
 
 // Set up Socket.IO on the same server
 const io = new Server(server, {
   cors: {
-    origin: allowedOrigins, // Allow these origins for WebSocket
+    origin: "*", // Allow all origins for WebSocket
     methods: ["GET", "POST"],
-    credentials: true,
+    credentials: false,
   },
 });
 
